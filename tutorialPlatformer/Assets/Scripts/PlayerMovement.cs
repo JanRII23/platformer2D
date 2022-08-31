@@ -12,6 +12,8 @@ public class PlayerMovement : MonoBehaviour
     private float dirX = 0f;
     [SerializeField] private float moveSpeed = 7f; //serializedfield allows the edits of value in the editor
     [SerializeField] private float jumpForce = 14f;
+
+    private enum MovementState { idle, running, jumping, falling } //this is basically an array, instead of having to remember the correct name, just refer to the its index position
     
     //data types int = 16, float = 4.45f, string = "bla", bool = true/false
 
@@ -49,22 +51,38 @@ public class PlayerMovement : MonoBehaviour
 
     private void UpdateAnimationState()
     {
+        MovementState state;
+
         if (dirX > 0f)
         {
             //make sure spelling within animator is exact
-            anim.SetBool("running", true); //running right
+            //anim.SetBool("running", true); //running right
+            state = MovementState.running;
             sprite.flipX = false;
 
         }
         else if (dirX < 0f) //note that i Know you can change which direction the character is facing via sprite flipX
         {
-            anim.SetBool("running", true);//running left
+            //anim.SetBool("running", true);//running left
+            state = MovementState.running;
             sprite.flipX = true;
         }
         else
         {
-            anim.SetBool("running", false);
+            /* anim.SetBool("running", false);*/
+            state = MovementState.idle;
         }
+
+        if (rb.velocity.y > .1f)
+        {
+            state = MovementState.jumping;
+        }
+        else if (rb.velocity.y < -.1f)
+        {
+            state = MovementState.falling;
+        }
+
+        anim.SetInteger("state", (int)state); //state value casts the integer representation
 
     }
 }
