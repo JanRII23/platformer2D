@@ -9,6 +9,9 @@ public class PlayerMovement : MonoBehaviour
     private SpriteRenderer sprite;
     private Animator anim;
 
+    private BoxCollider2D coll;
+    [SerializeField] private LayerMask jumpableGround;
+
     private float dirX = 0f;
     [SerializeField] private float moveSpeed = 7f; //serializedfield allows the edits of value in the editor
     [SerializeField] private float jumpForce = 14f;
@@ -22,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>(); //do this you can use the component
         sprite = GetComponent<SpriteRenderer>();
+        coll = GetComponent<BoxCollider2D>();
         anim = GetComponent<Animator>(); //animator component
     }
 
@@ -35,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
         //when creating variables make sure to keep in the smallest scope, notice how dirX was not initialize similar to rb up top
 
 
-        if(Input.GetButtonDown("Jump")) //using GetButtonDown is referring to the values in the input Manager
+        if(Input.GetButtonDown("Jump") && IsGrounded()) //using GetButtonDown is referring to the values in the input Manager
 
             //getkey has the effect of constantly adding velocity is a key is pressed 
             //getkeyDown only applies for a brief time --> note that both these types do not refer to the input manager in Unity but hard coded
@@ -46,6 +50,8 @@ public class PlayerMovement : MonoBehaviour
         //note that transition can be paused momentarily
 
         UpdateAnimationState();
+
+       
        
     }
 
@@ -85,4 +91,12 @@ public class PlayerMovement : MonoBehaviour
         anim.SetInteger("state", (int)state); //state value casts the integer representation
 
     }
+
+    private bool IsGrounded()
+    {
+        return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .1f, jumpableGround); 
+            //creates another box similar to the size of the actual boxcollider, 0f is the rotation value, vector2.down + .1f moves the box a tiny bit down/ offsets it (overlaps it)
+
+    }
+
 }
