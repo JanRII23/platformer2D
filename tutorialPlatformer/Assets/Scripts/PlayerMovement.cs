@@ -17,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpForce = 14f;
 
     private enum MovementState { idle, running, jumping, falling } //this is basically an array, instead of having to remember the correct name, just refer to the its index position
+
+    [SerializeField] private AudioSource jumpSoundEffect;
     
     //data types int = 16, float = 4.45f, string = "bla", bool = true/false
 
@@ -44,6 +46,7 @@ public class PlayerMovement : MonoBehaviour
             //getkey has the effect of constantly adding velocity is a key is pressed 
             //getkeyDown only applies for a brief time --> note that both these types do not refer to the input manager in Unity but hard coded
         {
+            jumpSoundEffect.Play();
            rb.velocity = new Vector3(rb.velocity.x, jumpForce, 0); //vector3(x, y, z), optional but can also use Vector2
         }
 

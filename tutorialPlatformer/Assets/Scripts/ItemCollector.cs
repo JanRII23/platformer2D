@@ -10,10 +10,13 @@ public class ItemCollector : MonoBehaviour
 
     [SerializeField] private Text cherriesText; //make sure to import libarary
 
+    [SerializeField] private AudioSource collectionSoundEffect;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Cherry")) //this is basically checking to see if the Tag is matching 
         {
+            collectionSoundEffect.Play();
             Destroy(collision.gameObject); //destroys game object when colliding
             cherries++;
             cherriesText.text = "Cherries: " + cherries;
