@@ -16,7 +16,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 7f; //serializedfield allows the edits of value in the editor
     [SerializeField] private float jumpForce = 14f;
 
-    private enum MovementState { idle, running, jumping, falling } //this is basically an array, instead of having to remember the correct name, just refer to the its index position
+    private int moveVal = 0; //this one sets up an integer whether player is walking or trying to run
+
+    private int maxJumps = 2; //using int values lets you adjust later on whenever an item can give infinite jumps
+
+    private enum MovementState { idle, running, jumping, falling, walking } //this is basically an array, instead of having to remember the correct name, just refer to the its index position
 
     [SerializeField] private AudioSource jumpSoundEffect;
     
@@ -36,33 +40,47 @@ public class PlayerMovement : MonoBehaviour
     {
         //This actually has joystick support
         dirX = Input.GetAxisRaw("Horizontal"); //getAxis has slight decelaration, getAxisRaw tries to minimize it
-        rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
+        
+
+        
+        if (Input.GetKey(KeyCode.LeftShift))  //this one still needs to be setup for console
+        {
+            rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
+            moveVal = 1;
+        }
+        else
+        {
+            rb.velocity = new Vector2(dirX * 3f, rb.velocity.y);
+            moveVal = 0;
+        }
 
         //when creating variables make sure to keep in the smallest scope, notice how dirX was not initialize similar to rb up top
 
 
-        if(Input.GetButtonDown("Jump") && IsGrounded()) //using GetButtonDown is referring to the values in the input Manager
+        if(Input.GetButtonDown("Jump")) //using GetButtonDown is referring to the values in the input Manager
 
             //getkey has the effect of constantly adding velocity is a key is pressed 
             //getkeyDown only applies for a brief time --> note that both these types do not refer to the input manager in Unity but hard coded
         {
-            jumpSoundEffect.Play();
-           rb.velocity = new Vector3(rb.velocity.x, jumpForce, 0); //vector3(x, y, z), optional but can also use Vector2
+
+            this.JumpLogic();
+         
         }
 
+        
         //note that transition can be paused momentarily
 
-        UpdateAnimationState();
+        UpdateAnimationState(moveVal);
 
        
        
     }
 
-    private void UpdateAnimationState()
+    private void UpdateAnimationState(int moveVal)
     {
         MovementState state;
 
-        if (dirX > 0f)
+        if (dirX > 0f && moveVal == 1)
         {
             //make sure spelling within animator is exact
             //anim.SetBool("running", true); //running right
@@ -70,10 +88,20 @@ public class PlayerMovement : MonoBehaviour
             sprite.flipX = false;
 
         }
-        else if (dirX < 0f) //note that i Know you can change which direction the character is facing via sprite flipX
+        else if (dirX < 0f && moveVal == 1) //note that i Know you can change which direction the character is facing via sprite flipX
         {
             //anim.SetBool("running", true);//running left
             state = MovementState.running;
+            sprite.flipX = true;
+        } 
+        else if(dirX > 0f && moveVal == 0)
+        {
+            state = MovementState.walking;
+            sprite.flipX = false;
+        }
+        else if (dirX < 0f && moveVal == 0)
+        {
+            state = MovementState.walking;
             sprite.flipX = true;
         }
         else
@@ -81,6 +109,7 @@ public class PlayerMovement : MonoBehaviour
             /* anim.SetBool("running", false);*/
             state = MovementState.idle;
         }
+
 
         if (rb.velocity.y > .1f)
         {
@@ -97,9 +126,27 @@ public class PlayerMovement : MonoBehaviour
 
     private bool IsGrounded()
     {
+        maxJumps = 2;
         return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .1f, jumpableGround); 
             //creates another box similar to the size of the actual boxcollider, 0f is the rotation value, vector2.down + .1f moves the box a tiny bit down/ offsets it (overlaps it)
 
     }
 
+    private void JumpLogic()
+    {
+
+        if (maxJumps > 0)
+        {
+            jumpSoundEffect.Play();
+            rb.velocity = new Vector3(rb.velocity.x, jumpForce, 0); //vector3(x, y, z), optional but can also use Vector2
+            maxJumps = maxJumps - 1;
+        }
+
+        if (maxJumps == 0)
+        {
+           
+            return;
+        }
+    }
+  
 }
