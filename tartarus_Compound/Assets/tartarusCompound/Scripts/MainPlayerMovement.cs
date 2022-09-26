@@ -20,7 +20,7 @@ public class MainPlayerMovement : MonoBehaviour
 
     private int maxJumps = 1; //using int values lets you adjust later on whenever an item can give infinite jumps
 
-    private enum MovementState { idle, running, jumping, falling, sneaking } //this is basically an array, instead of having to remember the correct name, just refer to the its index position
+    private enum MovementState { idle, running, jumping, falling, sneaking, shooting } //this is basically an array, instead of having to remember the correct name, just refer to the its index position
 
     [SerializeField] private AudioSource jumpSoundEffect;
 
@@ -70,6 +70,7 @@ public class MainPlayerMovement : MonoBehaviour
 */            rb.velocity = new Vector3(rb.velocity.x, jumpForce, 0); //vector3(x, y, z), optional but can also use Vector2
 
         }
+
 
    
 
@@ -130,6 +131,11 @@ public class MainPlayerMovement : MonoBehaviour
             state = MovementState.falling;
         }
 
+        if (Input.GetMouseButton(0))
+        {
+            state = MovementState.shooting;
+        }
+
         anim.SetInteger("state", (int)state); //state value casts the integer representation
 
     }
@@ -140,6 +146,9 @@ public class MainPlayerMovement : MonoBehaviour
         //creates another box similar to the size of the actual boxcollider, 0f is the rotation value, vector2.down + .1f moves the box a tiny bit down/ offsets it (overlaps it)
 
     }
+
+
+    //with regards to shooting, are we planning to add more sprites when mc is constant shooting or just have single-fire
 
 
 

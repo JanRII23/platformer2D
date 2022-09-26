@@ -49,10 +49,10 @@ public class PlayerLife : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Checkpoint")
+        if (collision.gameObject.CompareTag("Checkpoint"))
         {
             respawnPoint = transform.position;
-            Debug.Log("Success");
+          
         }
         /*else if (collision.tag == "Hole")
         {
