@@ -11,15 +11,17 @@ public class PlayerLife : MonoBehaviour
     private Vector3 respawnPoint; //records player position at the start of the game
 
 
-/*    [SerializeField] private AudioSource deathSoundEffect;
-*/
+    /*    [SerializeField] private AudioSource deathSoundEffect;
+    */
 
     // Start is called before the first frame update
     private void Start()
     {
         /*anim = GetComponent<Animator>();*/
         rb = GetComponent<Rigidbody2D>();
+
         respawnPoint = transform.position;
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -32,11 +34,13 @@ public class PlayerLife : MonoBehaviour
             /*            Die();
             */            //RestartLevel();
 
-            transform.position = respawnPoint;
+           // transform.position = respawnPoint;
         }
         else if (collision.gameObject.CompareTag("WorldFall"))
         {
             transform.position = respawnPoint;
+          
+            
         }
     }
 
@@ -65,4 +69,6 @@ public class PlayerLife : MonoBehaviour
 
         //consider ienumerating the timer in between respawns
     }
+
+   
 }

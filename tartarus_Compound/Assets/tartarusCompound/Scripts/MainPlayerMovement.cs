@@ -20,6 +20,11 @@ public class MainPlayerMovement : MonoBehaviour
 
     private int maxJumps = 1; //using int values lets you adjust later on whenever an item can give infinite jumps
 
+    ShootingScript bulletAnim;
+    public bool facingRight = true;
+
+    PunchingDmg punchAnim;
+
     private enum MovementState { idle, running, jumping, falling, sneaking, shooting, punching } //this is basically an array, instead of having to remember the correct name, just refer to the its index position
 
     [SerializeField] private AudioSource jumpSoundEffect;
@@ -33,6 +38,9 @@ public class MainPlayerMovement : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         coll = GetComponent<BoxCollider2D>();
         anim = GetComponent<Animator>(); //animator component
+
+        bulletAnim = GetComponent<ShootingScript>();
+        punchAnim = GetComponent<PunchingDmg>();
     }
 
     // Update is called once per frame
@@ -44,23 +52,26 @@ public class MainPlayerMovement : MonoBehaviour
         /* rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
          horizontalVal = 1;*/
 
+
         if (Input.GetKey(KeyCode.LeftShift))  //this one still needs to be setup for console for sneaking
         {
 
             rb.velocity = new Vector2(dirX * 3f, rb.velocity.y);
             horizontalVal = 0;
         }
-        else if (Input.GetButton("Fire1"))
+        else if (Input.GetButton("Fire1") && !Input.GetButton("Fire2"))
         {
             horizontalVal = 4;              //this is for fighting
         }
-        else if (Input.GetButton("Fire2") && IsGrounded())
+        else if (Input.GetButton("Fire2") && IsGrounded() && Input.GetButton("Fire1"))
         {
             horizontalVal = 3;              //shooting in ground
+            bulletAnim.Fire();
             rb.velocity = new Vector2(0, 0);
+            
 
         }
-        else if (Input.GetButton("Fire2") && !IsGrounded()) //mainly aiming right now and combine with fire one to shoot/ cause fire1 by itself is punch
+        else if (Input.GetButton("Fire2") && !IsGrounded() && Input.GetButton("Fire1")) //mainly aiming right now and combine with fire one to shoot/ cause fire1 by itself is punch
         {
             horizontalVal = 3;
             rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
@@ -93,10 +104,11 @@ public class MainPlayerMovement : MonoBehaviour
         UpdateAnimationState(horizontalVal);
 
 
-
+        
     }
 
- 
+   
+
     private void UpdateAnimationState(int horizontalVal)
     {
         MovementState state;
@@ -107,6 +119,7 @@ public class MainPlayerMovement : MonoBehaviour
             //anim.SetBool("running", true); //running right
             state = MovementState.running;
             sprite.flipX = false;
+            facingRight = true;
 
         }
         else if (dirX < 0f && horizontalVal == 1) //note that i Know you can change which direction the character is facing via sprite flipX
@@ -114,6 +127,7 @@ public class MainPlayerMovement : MonoBehaviour
             //anim.SetBool("running", true);//running left
             state = MovementState.running;
             sprite.flipX = true;
+            facingRight = false;
         }
         else if (dirX > 0f && horizontalVal == 0)
         {
@@ -150,11 +164,13 @@ public class MainPlayerMovement : MonoBehaviour
         if (horizontalVal == 3)
         {
             state = MovementState.shooting;
+            bulletAnim.Fire();
         }
 
         if (horizontalVal == 4)
         {
             state = MovementState.punching;
+            punchAnim.Punch();
         }
 
         anim.SetInteger("state", (int)state); //state value casts the integer representation
@@ -167,6 +183,7 @@ public class MainPlayerMovement : MonoBehaviour
         //creates another box similar to the size of the actual boxcollider, 0f is the rotation value, vector2.down + .1f moves the box a tiny bit down/ offsets it (overlaps it)
 
     }
+
 
 
     //with regards to shooting, are we planning to add more sprites when mc is constant shooting or just have single-fire
