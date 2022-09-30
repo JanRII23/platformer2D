@@ -20,7 +20,7 @@ public class MainPlayerMovement : MonoBehaviour
 
     private int maxJumps = 1; //using int values lets you adjust later on whenever an item can give infinite jumps
 
-    private enum MovementState { idle, running, jumping, falling, sneaking, shooting } //this is basically an array, instead of having to remember the correct name, just refer to the its index position
+    private enum MovementState { idle, running, jumping, falling, sneaking, shooting, punching } //this is basically an array, instead of having to remember the correct name, just refer to the its index position
 
     [SerializeField] private AudioSource jumpSoundEffect;
 
@@ -44,11 +44,27 @@ public class MainPlayerMovement : MonoBehaviour
         /* rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
          horizontalVal = 1;*/
 
-        if (Input.GetKey(KeyCode.LeftShift))  //this one still needs to be setup for console
+        if (Input.GetKey(KeyCode.LeftShift))  //this one still needs to be setup for console for sneaking
         {
 
             rb.velocity = new Vector2(dirX * 3f, rb.velocity.y);
             horizontalVal = 0;
+        }
+        else if (Input.GetButton("Fire1"))
+        {
+            horizontalVal = 4;              //this is for fighting
+        }
+        else if (Input.GetButton("Fire2") && IsGrounded())
+        {
+            horizontalVal = 3;              //shooting in ground
+            rb.velocity = new Vector2(0, 0);
+
+        }
+        else if (Input.GetButton("Fire2") && !IsGrounded()) //mainly aiming right now and combine with fire one to shoot/ cause fire1 by itself is punch
+        {
+            horizontalVal = 3;
+            rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
+
         }
         else
         {
@@ -67,13 +83,10 @@ public class MainPlayerMovement : MonoBehaviour
         //getkeyDown only applies for a brief time --> note that both these types do not refer to the input manager in Unity but hard coded
         {
 /*            jumpSoundEffect.Play();
-*/            rb.velocity = new Vector3(rb.velocity.x, jumpForce, 0); //vector3(x, y, z), optional but can also use Vector2
-
+*/          rb.velocity = new Vector3(rb.velocity.x, jumpForce, 0); //vector3(x, y, z), optional but can also use Vector2
+                       
+ 
         }
-
-
-   
-
 
         //note that transition can be paused momentarily
 
@@ -83,6 +96,7 @@ public class MainPlayerMovement : MonoBehaviour
 
     }
 
+ 
     private void UpdateAnimationState(int horizontalVal)
     {
         MovementState state;
@@ -131,9 +145,16 @@ public class MainPlayerMovement : MonoBehaviour
             state = MovementState.falling;
         }
 
-        if (Input.GetMouseButton(0))
+
+
+        if (horizontalVal == 3)
         {
             state = MovementState.shooting;
+        }
+
+        if (horizontalVal == 4)
+        {
+            state = MovementState.punching;
         }
 
         anim.SetInteger("state", (int)state); //state value casts the integer representation
