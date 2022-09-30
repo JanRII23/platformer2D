@@ -34,6 +34,10 @@ public class PlayerLife : MonoBehaviour
 
             transform.position = respawnPoint;
         }
+        else if (collision.gameObject.CompareTag("WorldFall"))
+        {
+            transform.position = respawnPoint;
+        }
     }
 
     private void Die()
