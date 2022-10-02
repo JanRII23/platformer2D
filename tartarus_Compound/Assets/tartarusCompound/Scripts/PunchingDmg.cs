@@ -7,7 +7,7 @@ public class PunchingDmg : MonoBehaviour
     [SerializeField] private GameObject punchRight;
     [SerializeField] private GameObject punchLeft;
 
-    private float punchRate = 0.25f;
+    private float punchRate = 0.2f;
     private float nextPunch = 0.0f;
 
     private void Start()
@@ -25,14 +25,14 @@ public class PunchingDmg : MonoBehaviour
 
             if (GetComponent<MainPlayerMovement>().facingRight)
             {
-                StartCoroutine("PunchWait", .25f);
+                StartCoroutine("PunchWait", .15f);
                 punchRight.SetActive(true);
 
 
             }
             else
             {
-                StartCoroutine("PunchWait", .25f);
+                StartCoroutine("PunchWait", .15f);
                 punchLeft.SetActive(true);
 
             }

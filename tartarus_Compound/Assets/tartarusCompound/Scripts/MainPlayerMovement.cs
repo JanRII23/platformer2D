@@ -24,6 +24,7 @@ public class MainPlayerMovement : MonoBehaviour
     public bool facingRight = true;
 
     PunchingDmg punchAnim;
+    private float punchForwardPos = 15f;
 
     private enum MovementState { idle, running, jumping, falling, sneaking, shooting, punching } //this is basically an array, instead of having to remember the correct name, just refer to the its index position
 
@@ -62,6 +63,7 @@ public class MainPlayerMovement : MonoBehaviour
         else if (Input.GetButton("Fire1") && !Input.GetButton("Fire2"))
         {
             horizontalVal = 4;              //this is for fighting
+            
         }
         else if (Input.GetButton("Fire2") && IsGrounded() && Input.GetButton("Fire1"))
         {
@@ -167,7 +169,21 @@ public class MainPlayerMovement : MonoBehaviour
             bulletAnim.Fire();
         }
 
-        if (horizontalVal == 4)
+
+
+        if (dirX > 0f && horizontalVal == 4)
+        {
+            state = MovementState.punching;
+            punchAnim.Punch();
+            rb.AddForce(transform.right * punchForwardPos);
+        }
+        else if (dirX < 0f && horizontalVal == 4)
+        {
+            state = MovementState.punching;
+            punchAnim.Punch();
+            rb.AddForce(-(transform.right * punchForwardPos));
+        }
+        else if(horizontalVal == 4)
         {
             state = MovementState.punching;
             punchAnim.Punch();
