@@ -10,6 +10,12 @@ public class PlayerLife : MonoBehaviour
 
     private Vector3 respawnPoint; //records player position at the start of the game
 
+    private bool hasFallen = false;
+    private float deathTime = 0.30f;
+
+
+    private SpriteRenderer mainPlayer;
+    private Animator anim;
 
     /*    [SerializeField] private AudioSource deathSoundEffect;
     */
@@ -19,9 +25,16 @@ public class PlayerLife : MonoBehaviour
     {
         /*anim = GetComponent<Animator>();*/
         rb = GetComponent<Rigidbody2D>();
-
         respawnPoint = transform.position;
+        mainPlayer = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
+    }
 
+    private void Update()
+    {
+        
+     
+      
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -38,9 +51,17 @@ public class PlayerLife : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("WorldFall"))
         {
-            transform.position = respawnPoint;
-          
-            
+            //just disable the sprite renderer and then enable it, cause disabling object stops all the coroutine and play the explode anim
+            anim.Play("Player_Explode");
+
+            StartCoroutine(Respawn());
+
+        }
+
+        else if (collision.gameObject.CompareTag("OutofBounds"))
+        {
+            //StartCoroutine("Respawn", 5f);
+           
         }
     }
 
@@ -70,5 +91,15 @@ public class PlayerLife : MonoBehaviour
         //consider ienumerating the timer in between respawns
     }
 
+    private IEnumerator Respawn()
+    {
+
+        //mainPlayer.enabled = false;
+        yield return new WaitForSeconds(deathTime);
+        anim.Play("Player_Idle");
+        transform.position = respawnPoint;
+        //mainPlayer.enabled = true;
+        Debug.Log("Success");
+    }
    
 }

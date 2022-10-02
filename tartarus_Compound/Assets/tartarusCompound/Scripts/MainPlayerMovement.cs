@@ -13,7 +13,7 @@ public class MainPlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask jumpableGround;
 
     private float dirX = 0f;
-    [SerializeField] private float moveSpeed = 7f; //serializedfield allows the edits of value in the editor
+    [SerializeField] private float moveSpeed = 10f; //serializedfield allows the edits of value in the editor
     [SerializeField] private float jumpForce = 20f;
 
     private int horizontalVal = 0; //this one sets up an integer whether player is walking or trying to run
@@ -24,7 +24,11 @@ public class MainPlayerMovement : MonoBehaviour
     public bool facingRight = true;
 
     PunchingDmg punchAnim;
-    private float punchForwardPos = 15f;
+    private float punchForwardPos = 20f;
+
+    private int numPunches = 30;
+    public int curPunch = 0;
+    private bool canPunch = true;
 
     private enum MovementState { idle, running, jumping, falling, sneaking, shooting, punching } //this is basically an array, instead of having to remember the correct name, just refer to the its index position
 
@@ -42,6 +46,8 @@ public class MainPlayerMovement : MonoBehaviour
 
         bulletAnim = GetComponent<ShootingScript>();
         punchAnim = GetComponent<PunchingDmg>();
+
+        //numPunches = extraPunchVal;
     }
 
     // Update is called once per frame
@@ -53,6 +59,11 @@ public class MainPlayerMovement : MonoBehaviour
         /* rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
          horizontalVal = 1;*/
 
+        
+
+
+
+
 
         if (Input.GetKey(KeyCode.LeftShift))  //this one still needs to be setup for console for sneaking
         {
@@ -62,8 +73,20 @@ public class MainPlayerMovement : MonoBehaviour
         }
         else if (Input.GetButton("Fire1") && !Input.GetButton("Fire2"))
         {
-            horizontalVal = 4;              //this is for fighting
+
+           /* if (curPunch == numPunches)
+            {
+                anim.SetBool("test", false);
+                StartCoroutine(PunchCooldown());
+                //Debug.Log("Success");
+            }
+            curPunch++;*/
+            horizontalVal = 4;
+          
+                 //this is for fighting
             
+         
+
         }
         else if (Input.GetButton("Fire2") && IsGrounded() && Input.GetButton("Fire1"))
         {
@@ -171,23 +194,59 @@ public class MainPlayerMovement : MonoBehaviour
 
 
 
-        if (dirX > 0f && horizontalVal == 4)
+
+        if (dirX > 0f && horizontalVal == 4 && facingRight && canPunch)
         {
+
+          
+            curPunch++;
+            
             state = MovementState.punching;
             punchAnim.Punch();
             rb.AddForce(transform.right * punchForwardPos);
+
+            if (curPunch > numPunches)
+            {
+                StartCoroutine(PunchCooldown());
+                //Debug.Log("Success");
+            }
+
+            /* if (curPunch == numPunches)
+           {
+               anim.SetBool("test", false);
+               StartCoroutine(PunchCooldown());
+               //Debug.Log("Success");
+           }
+           curPunch++;*/
+
         }
-        else if (dirX < 0f && horizontalVal == 4)
+        else if (dirX < 0f && horizontalVal == 4 && !facingRight && canPunch)
         {
+            curPunch++;
+
             state = MovementState.punching;
             punchAnim.Punch();
             rb.AddForce(-(transform.right * punchForwardPos));
+            //rb.velocity = new Vector2(0, 0);
+
+            if (curPunch > numPunches)
+            {
+                StartCoroutine(PunchCooldown());
+                //Debug.Log("Success");
+            }
+
         }
-        else if(horizontalVal == 4)
-        {
+        else if (horizontalVal == 4)
+         {
+            
+
             state = MovementState.punching;
             punchAnim.Punch();
+
+          
+
         }
+
 
         anim.SetInteger("state", (int)state); //state value casts the integer representation
 
@@ -200,10 +259,29 @@ public class MainPlayerMovement : MonoBehaviour
 
     }
 
+    private IEnumerator PunchCooldown()
+    {
+
+        curPunch = 0;
+        canPunch = false;
+        yield return new WaitForSeconds(0.25f);
+        rb.velocity = new Vector2(dirX * -moveSpeed, rb.velocity.y);
+        canPunch = true;
+    }
+
+
+
+    /*private IEnumerator PunchWait(float punchDelay)
+    {
+        yield return new WaitForSeconds(punchDelay);
+        numPunches = 2;
+    }*/
+
+
+
 
 
     //with regards to shooting, are we planning to add more sprites when mc is constant shooting or just have single-fire
-
 
 
 }

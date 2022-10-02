@@ -41,12 +41,12 @@ public class PunchingDmg : MonoBehaviour
 
     }
 
-    IEnumerator PunchWait(float punchDelay)
+    private IEnumerator PunchWait(float punchDelay)
     {
         yield return new WaitForSeconds(punchDelay);
         punchRight.SetActive(false);
         punchLeft.SetActive(false);
-       
+      
         
     }
 }
