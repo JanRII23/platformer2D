@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4c7d0ee2b1c3e4945b7f6c47df71cc73
+guid: 89f427c2dd90aa544b367865aacc50ca
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 14
+  spritePixelsToUnits: 8
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -107,106 +107,169 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 2D Main Character Death_0
+      name: enemy_guard_slam_0
       rect:
         serializedVersion: 2
         x: 6
         y: 0
-        width: 10
+        width: 13
         height: 24
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6485700d067c58d44a2923e73bf3e58f
-      internalID: -1577907783
+      spriteID: 301f9eb00eb3a7e48876e59dcc31c7f3
+      internalID: -890442437
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 2D Main Character Death_1
+      name: enemy_guard_slam_1
       rect:
         serializedVersion: 2
-        x: 30
+        x: 31
+        y: 0
+        width: 11
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 66e15c4ddaf51b445a84b719d714f4f9
+      internalID: -214441241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_guard_slam_2
+      rect:
+        serializedVersion: 2
+        x: 55
         y: 0
         width: 10
         height: 24
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b2ea0b2c2bc415b498b5800170931710
-      internalID: 599614903
+      spriteID: 81b710e2bf5316541956cec493492194
+      internalID: 734349127
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 2D Main Character Death_2
+      name: enemy_guard_slam_3
       rect:
         serializedVersion: 2
-        x: 54
+        x: 78
         y: 0
-        width: 12
+        width: 11
         height: 24
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6044a1923c7125e4a9418124d74734af
-      internalID: -2097470614
+      spriteID: cbbb9269b2c8f574dbb7bacf5cc926ee
+      internalID: -2129285301
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 2D Main Character Death_3
+      name: enemy_guard_slam_4
       rect:
         serializedVersion: 2
-        x: 77
+        x: 103
         y: 0
-        width: 19
+        width: 17
         height: 24
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 79dcbb1fa1260084ab6f12a6fba82853
-      internalID: 1256201892
+      spriteID: f953af288b9469d47836e093fd97a4cc
+      internalID: -2033236777
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 2D Main Character Death_4
+      name: enemy_guard_slam_5
       rect:
         serializedVersion: 2
-        x: 100
-        y: 0
-        width: 20
-        height: 24
+        x: 114
+        y: 4
+        width: 6
+        height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2d7c8cad86da8f74ba9b73f9408ebc30
-      internalID: 1007747897
+      spriteID: 38001d66e48439c4a858992c56282340
+      internalID: 1025305910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_guard_slam_6
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 0
+        width: 13
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a826b795d793d654190abeeb443e82a9
+      internalID: 1623367614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemy_guard_slam_7
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 0
+        width: 11
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aee77f18e867d904eb57dd23704d76b1
+      internalID: -1758144291
       vertices: []
       indices: 
       edges: []
@@ -222,11 +285,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      2D Main Character Death_3: 1256201892
-      2D Main Character Death_1: 599614903
-      2D Main Character Death_0: -1577907783
-      2D Main Character Death_4: 1007747897
-      2D Main Character Death_2: -2097470614
+      enemy_guard_slam_6: 1623367614
+      enemy_guard_slam_5: 1025305910
+      enemy_guard_slam_7: -1758144291
+      enemy_guard_slam_2: 734349127
+      enemy_guard_slam_1: -214441241
+      enemy_guard_slam_3: -2129285301
+      enemy_guard_slam_0: -890442437
+      enemy_guard_slam_4: -2033236777
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 

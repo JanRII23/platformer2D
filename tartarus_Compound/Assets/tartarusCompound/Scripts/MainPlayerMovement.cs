@@ -269,6 +269,13 @@ public class MainPlayerMovement : MonoBehaviour
         canPunch = true;
     }
 
+    public void MainPlayerDeath()
+    {
+        anim.Play("Player_Death");
+
+
+    }
+
 
 
     /*private IEnumerator PunchWait(float punchDelay)

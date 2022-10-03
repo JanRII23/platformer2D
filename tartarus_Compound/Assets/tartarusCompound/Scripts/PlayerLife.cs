@@ -17,6 +17,9 @@ public class PlayerLife : MonoBehaviour
     private SpriteRenderer mainPlayer;
     private Animator anim;
 
+    [SerializeField] ObjectiveReached objectiveFlag; //different way to access another object from a script
+    [SerializeField] ObjectiveReached endingFlag;
+
     /*    [SerializeField] private AudioSource deathSoundEffect;
     */
 
@@ -28,6 +31,8 @@ public class PlayerLife : MonoBehaviour
         respawnPoint = transform.position;
         mainPlayer = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+
+
     }
 
     private void Update()
@@ -80,8 +85,20 @@ public class PlayerLife : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Checkpoint"))
         {
-            respawnPoint = transform.position;
-          
+            if (collision.gameObject.name == "checkpointOne")
+            {
+                respawnPoint = transform.position;
+                objectiveFlag.CheckPointAnim();
+
+            }else if (collision.gameObject.name == "checkpointOneFinal")
+            {
+                respawnPoint = transform.position;
+                endingFlag.CheckPointAnim();
+            }
+            
+           
+
+
         }
         /*else if (collision.tag == "Hole")
         {
@@ -101,5 +118,21 @@ public class PlayerLife : MonoBehaviour
         //mainPlayer.enabled = true;
         Debug.Log("Success");
     }
-   
+
+    public void combackAlive()
+    {
+        StartCoroutine(EnemyPhysicalDeath());
+    }
+
+    private IEnumerator EnemyPhysicalDeath()
+    {
+
+        //mainPlayer.enabled = false;
+        yield return new WaitForSeconds(1.25f);
+        anim.Play("Player_Idle");
+        transform.position = respawnPoint;
+        
+        //mainPlayer.enabled = true;
+    }
+
 }

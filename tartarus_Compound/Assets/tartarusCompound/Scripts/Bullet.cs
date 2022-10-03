@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    EnemyGuard explode;
+    MainEnemyGuard explode;
 
     private void Start()
     {
-        explode = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyGuard>();
+        explode = GameObject.FindGameObjectWithTag("Enemy").GetComponent<MainEnemyGuard>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -16,7 +16,7 @@ public class Bullet : MonoBehaviour
         if (collision.CompareTag("Enemy"))
         {         
             explode.EnemyGuardParticle();
-            Destroy(collision.gameObject, .25f);
+            Destroy(collision.gameObject, .10f);
             Destroy(gameObject); //destroys bullet when hitting enemy
         }
 
