@@ -7,6 +7,8 @@ public class PunchingDmg : MonoBehaviour
     [SerializeField] private GameObject punchRight;
     [SerializeField] private GameObject punchLeft;
 
+    private Animator anim;
+
     private float punchRate = 0.2f;
     private float nextPunch = 0.0f;
 
@@ -14,6 +16,8 @@ public class PunchingDmg : MonoBehaviour
     {
         punchRight.SetActive(false);
         punchLeft.SetActive(false);
+
+        anim = GetComponent<Animator>(); //animator component
     }
 
     public void Punch()
@@ -27,13 +31,15 @@ public class PunchingDmg : MonoBehaviour
             {
                 StartCoroutine("PunchWait", .15f);
                 punchRight.SetActive(true);
-
+               
+               
 
             }
             else
             {
                 StartCoroutine("PunchWait", .15f);
                 punchLeft.SetActive(true);
+               
 
             }
 
@@ -46,7 +52,9 @@ public class PunchingDmg : MonoBehaviour
         yield return new WaitForSeconds(punchDelay);
         punchRight.SetActive(false);
         punchLeft.SetActive(false);
-      
+       // anim.SetBool("canPunch", false);
         
+
+
     }
 }

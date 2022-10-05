@@ -18,6 +18,9 @@ public class PlayerLife : MonoBehaviour
     private Animator anim;
 
     [SerializeField] ObjectiveReached objectiveFlag; //different way to access another object from a script
+
+    [SerializeField] private AudioClip deathSound;
+
     [SerializeField] ObjectiveReached endingFlag;
 
     /*    [SerializeField] private AudioSource deathSoundEffect;
@@ -38,7 +41,10 @@ public class PlayerLife : MonoBehaviour
     private void Update()
     {
         
-     
+     if (Input.GetKeyDown(KeyCode.H)) //for geting stuck
+        {
+            StartCoroutine(Respawn());
+        }
       
     }
 
@@ -58,7 +64,7 @@ public class PlayerLife : MonoBehaviour
         {
             //just disable the sprite renderer and then enable it, cause disabling object stops all the coroutine and play the explode anim
             anim.Play("Player_Explode");
-
+            AudioSource.PlayClipAtPoint(deathSound, transform.position);
             StartCoroutine(Respawn());
 
         }
@@ -94,6 +100,9 @@ public class PlayerLife : MonoBehaviour
             {
                 respawnPoint = transform.position;
                 endingFlag.CheckPointAnim();
+            }else 
+            {
+                respawnPoint = transform.position;
             }
             
            
